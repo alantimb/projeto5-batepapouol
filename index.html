@@ -16,19 +16,30 @@
         rel="stylesheet">
 </head>
 
-<body>
+<body onload="entrarNaSala()">
+    <!-- Bônus: <div class="input-screen"></div> -->
+
+    <!-- Menu superior -->
     <div class="header">
         <img src="./imagens/logo 1.png" alt="Logo da UOL">
 
         <ion-icon name="people"></ion-icon>
     </div>
+
+    <!-- chat -->
     <div class="principal"></div>
+
+    <!-- Mnu inferior com botão de envio de msgs -->
     <div class="footer">
-        <div class="message"></div>
+        <div class="input-message">
+            <input type="text" placeholder="Escreva aqui...">
+        </div>
 
         <ion-icon name="paper-plane-outline"></ion-icon>
     </div>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="./script.js"></script>
 </body>

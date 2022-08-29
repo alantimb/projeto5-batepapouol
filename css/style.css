@@ -68,12 +68,12 @@
 }
 
 /* mensagem privada */
-.chat .messages .reserved {
+.chat .messages .private_message {
     background-color: #ffdede;
 }
 
 /* mensagem pública */
-.chat .messages .normal {
+.chat .messages .message {
     background-color: #ffffff;
 }
 

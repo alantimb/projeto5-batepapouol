@@ -38,7 +38,18 @@ function entrarNaSala() {
     return nomeDoUsuario;
 }
 
-// console.log(entrarNaSala);
+// testar se o usuário ainda está logado - não consegui ir mto além pois o servidor não funciona
+function testeDeConexao(nome) {
+    if (nome) {
+        const promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nome);
+        renderizarMensagens();
+    }
+}
+
+const teste = testeDeConexao(nomeDoUsuario);
+
+setInterval(teste, 5000);
+
 
 // função-carta para pegar as mensagens do servidor
 function buscarMensagens() {
@@ -97,12 +108,11 @@ function renderizarMensagens(msgs) {
         `;
         }
 
-        // const ultimoElemento = document.querySelector('.message');
-        // ultimoElemento.scrollIntoView();
+        const ultimoElemento = document.querySelectorAll('.message');
+        console.log(ultimoElemento);
+        ultimoElemento[ultimoElemento.length - 1].scrollIntoView();
 
-        // let ultimaMensagem = mensagensDoServidor[mensagensDoServidor.length - 1];
-        // ultimaMensagem.scrollIntoView();
-        // // console.log(ultimaMensagem);
+
     }
 
 }
@@ -116,13 +126,6 @@ function erroNaMensagem(erro) {
         entrarNaSala();
     }
 }
-
-function testeDeConexao(nome) {
-    const prom = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nome);
-    prom.then()
-}
-
-testeDeConexao(nomeDoUsuario);
 
 // função para colocar a menssagem digitada na carta e enviá-la ao servidor
 function enviarMensagem() {

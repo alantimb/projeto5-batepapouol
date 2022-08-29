@@ -12,7 +12,7 @@
 // OK mensagens reservadas (pvds) devem ter fundo rosa
 // OK mensagens normais devem ter fundo branco
 // 13º FALTA o site deve checar o nome do usuário antes de mostrar ao mesmo as msgs reservadas
-// 14º FALTA a mensagem a ser enviada deve ir para o servidor
+// OK 14º a mensagem a ser enviada deve ir para o servidor
 // 15º FALTA se responder com sucesso, as msgs do servidor devem ser re-obtidas e o chat atualizado
 // 16º FALTA se responder com erro, o usuário não está mais na sala, então a página deve att para pedir nome
 // 17º [BONUS] FALTA no envio, deve ser informado remetente, destinatário e se a msg é reservada
@@ -20,11 +20,12 @@
 
 // array onde serão salvas as mensagens do servidor
 let mensagensDoServidor = [];
+let nomeDoUsuario;
 
 // função para perguntar o nome do usuário ao entrar, colocá-lo na carta e enviá-lo ao servidor
 function entrarNaSala() {
     // pede o nome do usuário ao entrar no site
-    let nomeDoUsuario = prompt("Digite aqui como quer ser chamado(a): ");
+    nomeDoUsuario = prompt("Digite aqui como quer ser chamado(a): ");
     // objeto que recebe o nome do usuário
     const nickname = {
         name: nomeDoUsuario
@@ -32,17 +33,20 @@ function entrarNaSala() {
     // requisição para envio do nome do usuário ao servidor, com recebimento da promessa dos dados e erros
     const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', nickname);
     promessa.then(buscarMensagens);
-    promessa.catch(mensagemDeErro);
+    promessa.catch(erroNaMensagem);
+
+    return nomeDoUsuario;
 }
+
+// console.log(entrarNaSala);
 
 // função-carta para pegar as mensagens do servidor
 function buscarMensagens() {
     // requisição para buscar mensagens no servidor e enviá-las para renderização
-    const promes = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-    promes.then(renderizarMensagens);
+    const promess = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
+    promess.then(renderizarMensagens);
 }
 
-renderizarMensagens();
 
 // função para receber as msgs já no site e renderizá-las no chat
 function renderizarMensagens(msgs) {
@@ -55,7 +59,9 @@ function renderizarMensagens(msgs) {
     const listaMensagens = document.querySelector('.messages');
     listaMensagens.innerHTML = '';
 
-    for (let i = 0; i < (mensagensDoServidor.length / 10); i++) {
+    const ultimaMensagem = document.querySelector(".message");
+
+    for (let i = 0; i < (mensagensDoServidor.length); i++) {
         // mensagens públicas
         if (mensagensDoServidor[i].type === "message") {
             listaMensagens.innerHTML += `
@@ -63,8 +69,8 @@ function renderizarMensagens(msgs) {
         <span class="time">(${mensagensDoServidor[i].time}) &nbsp; </span> 
         <span class="from">${mensagensDoServidor[i].from}&nbsp;</span>
         <span>para&nbsp;</span>
-        <span class="to">${mensagensDoServidor[i].to}</span>
-        <span class="text">:&nbsp;${mensagensDoServidor[i].text}</span>
+        <span class="to">${mensagensDoServidor[i].to}:</span>
+        <span class="text">&nbsp;${mensagensDoServidor[i].text}</span>
         </li>
         `;
         }
@@ -74,7 +80,7 @@ function renderizarMensagens(msgs) {
         <li class="status">
         <span class="time">(${mensagensDoServidor[i].time}) &nbsp; </span> 
         <span class="from">${mensagensDoServidor[i].from}</span>
-        <span class="text">:&nbsp;${mensagensDoServidor[i].text}</span>
+        <span class="text">&nbsp;${mensagensDoServidor[i].text}</span>
         </li>
         `;
         }
@@ -85,47 +91,57 @@ function renderizarMensagens(msgs) {
         <span class="time">(${mensagensDoServidor[i].time}) &nbsp; </span> 
         <span class="from">${mensagensDoServidor[i].from}&nbsp;</span>
         <span>reservadamente para&nbsp;</span>
-        <span class="to">${mensagensDoServidor[i].to}</span>
-        <span class="text">:&nbsp;${mensagensDoServidor[i].text}</span>
+        <span class="to">${mensagensDoServidor[i].to}:</span>
+        <span class="text">&nbsp;${mensagensDoServidor[i].text}</span>
         </li>
         `;
         }
 
+        // const ultimoElemento = document.querySelector('.message');
+        // ultimoElemento.scrollIntoView();
 
+        // let ultimaMensagem = mensagensDoServidor[mensagensDoServidor.length - 1];
+        // ultimaMensagem.scrollIntoView();
+        // // console.log(ultimaMensagem);
     }
-    // ainda vai entrar a renderização
 
 }
 
 // função para impedir a repetição de nome simultâneo no servidor
-function mensagemDeErro(erro) {
+function erroNaMensagem(erro) {
 
     // erro da repetição de nome simultâneo no servidor
     if (erro.response.status === 400) {
         alert("Esse nome já existe, escolha outro!");
         entrarNaSala();
     }
-    // qndo não há mais erros, o programa avança para o recebimento de msgs
-    else if (erro.response.status === 200) {
-        buscarMensagens();
-    }
 }
 
+function testeDeConexao(nome) {
+    const prom = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nome);
+    prom.then()
+}
 
+testeDeConexao(nomeDoUsuario);
 
-// function testeDeConexao() {
+// função para colocar a menssagem digitada na carta e enviá-la ao servidor
+function enviarMensagem() {
+    const mensagemDigitada = document.querySelector('.footer .input-message .typed-message');
 
-//     const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', nomeDoUsuario);
-//     promessa.then(receberMensagens)
-// }
+    console.log(nomeDoUsuario);
 
+    const mensagemEnviada = {
+        from: nomeDoUsuario,
+        to: "Todos",
+        text: mensagemDigitada.value,
+        type: "message"
+    };
 
+    // mensagemDigitada.innerHTML = mensagemEnviada.text;
 
+    const promes = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagemEnviada);
+    promes.then(buscarMensagens);
+    // promes.catch(buscarMensagens);
 
-
-// function enviarMensagem() {
-//     // document.querselector para o input
-
-//     const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages');
-//     promessa.then();
-// }
+    // renderizarMensagens();
+}

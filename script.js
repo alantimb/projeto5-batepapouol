@@ -1,23 +1,3 @@
-// FUNCIONAMENTO
-// OK ao entrar na sala, pedir nome do usuário 
-// OK o nome deverá ser enviado para o servidor
-// OK checar se o nome já consta no servidor
-// OK se sim, pedir que o usuário digite outro
-// 5º FALTA o site deverá checar se o usuário está na sala a cada 5 seg
-// 6º FALTA se não estiver, deverá ser considerado que "Fulano saiu da sala"
-// OK carregar as mensagens do servidos e exibi-las no site
-// 8º FALTA atualizar o site a cada 3 seg para re-carregar as mensagens do servidor
-// 9º FALTA chat com rolagem automática por padrão 
-// OK mensagens com "entrou na sala" ou "saiu da sala" devem ter fundo cinza
-// OK mensagens reservadas (pvds) devem ter fundo rosa
-// OK mensagens normais devem ter fundo branco
-// 13º FALTA o site deve checar o nome do usuário antes de mostrar ao mesmo as msgs reservadas
-// OK 14º a mensagem a ser enviada deve ir para o servidor
-// 15º FALTA se responder com sucesso, as msgs do servidor devem ser re-obtidas e o chat atualizado
-// 16º FALTA se responder com erro, o usuário não está mais na sala, então a página deve att para pedir nome
-// 17º [BONUS] FALTA no envio, deve ser informado remetente, destinatário e se a msg é reservada
-// 18º FALTA se não der para escolher dest e reserv, enviar somente como pública e para todos
-
 // array onde serão salvas as mensagens do servidor
 let mensagensDoServidor = [];
 let nomeDoUsuario;
